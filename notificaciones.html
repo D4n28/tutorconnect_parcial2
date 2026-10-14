@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TutorConnect - Notificaciones</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .notif-item {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: var(--transition);
+    }
+
+    .notif-item.unread {
+      background: #f8faff;
+      border-left: 4px solid var(--primary);
+    }
+
+    .notif-icon-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-light);
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbar-container"></div>
+
+  <main class="main-container" style="max-width: 800px;">
+    
+    <!-- Encabezado Estilo Figma (Páginas 7 y 13 del prototipo) -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <div>
+        <h1 style="font-size: 1.5rem; font-weight: 800;">Notificaciones</h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Historial de alertas, confirmaciones de reserva y recordatorios</p>
+      </div>
+      <button type="button" class="btn btn-outline btn-sm" onclick="marcarLeidas()">
+        Marcar todas como leídas
+      </button>
+    </div>
+
+    <!-- Canal de Integraciones (Correo y WhatsApp, Página 7) -->
+    <div class="card" style="margin-bottom: 1.5rem; background: #f0fdf4; border-color: #bbf7d0;">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span style="font-size: 1.5rem;">📲</span>
+        <div>
+          <div style="font-weight: 700; color: #166534; font-size: 0.95rem;">Notificaciones externas sincronizadas</div>
+          <p style="font-size: 0.85rem; color: #15803d;">Todas las confirmaciones se envían automáticamente a tu <strong>correo electrónico</strong> y a tu número de <strong>WhatsApp</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de Notificaciones -->
+    <div id="notificacionesList">
+      <!-- Inyectado dinámicamente -->
+    </div>
+
+  </main>
+
+  <div id="mobile-bottom-nav"></div>
+  <div id="app-footer"></div>
+
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    function renderizarNotificaciones() {
+      const lista = BaseDatosTutor.obtenerNotificaciones();
+      const contenedor = document.getElementById('notificacionesList');
+
+      if (lista.length === 0) {
+        contenedor.innerHTML = `<div class="tarjeta card" style="text-align: center; color: var(--text-muted);">No tienes notificaciones pendientes.</div>`;
+        return;
+      }
+
+      contenedor.innerHTML = lista.map(n => `
+        <div class="notif-item ${!n.leida ? 'unread' : ''}">
+          <div class="notif-icon-circle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </div>
+          <div style="flex: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+              <h2 style="font-size: 1rem; font-weight: 700;">${n.titulo}</h2>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">${n.tiempo}</span>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-main); line-height: 1.4;">${n.mensaje}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function marcarLeidas() {
+      BaseDatosTutor.marcarTodasLeidas();
+      renderizarNotificaciones();
+      mostrarMensajeToast("Todas las notificaciones marcadas como leídas.");
+      const punto = document.querySelector('.badge-dot') || document.querySelector('.punto-alerta');
+      if (punto) punto.remove();
+    }
+
+    // Aliases para compatibilidad
+    function renderNotificaciones() { renderizarNotificaciones(); }
+
+    document.addEventListener("DOMContentLoaded", renderizarNotificaciones);
+  </script>
+</body>
+</html>

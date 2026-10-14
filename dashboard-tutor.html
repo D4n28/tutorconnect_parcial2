@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TutorConnect - Panel del Tutor</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .request-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .request-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-full);
+      object-fit: cover;
+    }
+
+    .calendar-legend {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.75rem;
+    }
+
+    .legend-box {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 0.35rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbar-container"></div>
+
+  <main class="main-container">
+    
+    <!-- Bienvenida y Fecha (Páginas 6 y 11 del prototipo) -->
+    <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <h1 style="font-size: 1.6rem; font-weight: 800;">Bienvenida, Ana</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Panel de control y gestión de tutorías &bull; Martes, 14 de Octubre de 2026</p>
+      </div>
+      <div>
+        <span class="badge badge-online" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">
+          <span class="badge-dot-indicator"></span> Perfil Activo y Visible
+        </span>
+      </div>
+    </div>
+
+    <!-- Tarjetas de Métricas Resumen (Páginas 6 y 11) -->
+    <div class="tutor-metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon-box" style="background: #fff7ed; color: #ea580c;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+        <div>
+          <div class="metric-number" id="metricPendientes">3</div>
+          <div class="metric-label">Solicitudes pendientes</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-box" style="background: #ecfdf5; color: #059669;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </div>
+        <div>
+          <div class="metric-number">2</div>
+          <div class="metric-label">Confirmadas hoy</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-box" style="background: #eff6ff; color: #2563eb;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </div>
+        <div>
+          <div class="metric-number" id="metricTotalHoras">22</div>
+          <div class="metric-label">Franjas disponibles</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-box" style="background: #fdf2f8; color: #db2777;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        </div>
+        <div>
+          <div class="metric-number">395 €</div>
+          <div class="metric-label">Ingresos estimados</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layout Dividido: Calendario de Disponibilidad Semanal + Solicitudes Recibidas (Página 6) -->
+    <div class="tutor-split-layout">
+      
+      <!-- Columna 1: Calendario de Disponibilidad Interactivo -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h2 style="font-size: 1.2rem; font-weight: 700;">Disponibilidad semanal</h2>
+            <p style="font-size: 0.82rem; color: var(--text-muted);">Haz clic en cualquier bloque para activar o desactivar tu disponibilidad.</p>
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" onclick="guardarDisponibilidad()">
+            Guardar cambios
+          </button>
+        </div>
+
+        <div class="calendar-legend">
+          <span><span class="legend-box" style="background: var(--primary);"></span> Disponible</span>
+          <span><span class="legend-box" style="background: white; border: 1px dashed #cbd5e1;"></span> No disponible</span>
+          <span><span class="legend-box" style="background: #fee2e2; border: 1px solid #fca5a5;"></span> Ocupada/Reservada</span>
+        </div>
+
+        <!-- Grilla de Calendario -->
+        <div class="schedule-calendar-grid" id="calendarGrid">
+          <!-- Inyectado por JS -->
+        </div>
+      </div>
+
+      <!-- Columna 2: Solicitudes Recibidas (Aceptar / Rechazar) -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h2 style="font-size: 1.2rem; font-weight: 700;">Solicitudes pendientes</h2>
+          <span class="badge badge-pending" id="badgeTotalPendientes">3 nuevas</span>
+        </div>
+
+        <div id="solicitudesList">
+          <!-- Inyectado por JS -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <div id="mobile-bottom-nav"></div>
+  <div id="app-footer"></div>
+
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const DIAS = ["Lun", "Mar", "Mié", "Jue", "Vie"];
+    const HORAS = ["08:00", "09:00", "10:00", "11:00", "14:00", "15:00", "16:00", "17:00"];
+
+    // Matriz de bloques de disponibilidad (true = disponible, 'booked' = ocupado por estudiante)
+    let estadoCalendario = {
+      "08:00-Lun": true, "09:00-Lun": true, "10:00-Lun": "booked", "11:00-Lun": true,
+      "08:00-Mar": false, "09:00-Mar": true, "10:00-Mar": true, "11:00-Mar": false,
+      "08:00-Mié": true, "09:00-Mié": true, "10:00-Mié": true, "11:00-Mié": true,
+      "08:00-Jue": false, "09:00-Jue": true, "10:00-Jue": true, "11:00-Jue": "booked",
+      "08:00-Vie": true, "09:00-Vie": true, "10:00-Vie": true, "11:00-Vie": false,
+      "14:00-Lun": true, "15:00-Lun": true, "16:00-Lun": false,
+      "14:00-Mar": false, "15:00-Mar": true, "16:00-Mar": true,
+      "14:00-Mié": true, "15:00-Mié": true, "16:00-Mié": true,
+      "14:00-Jue": false, "15:00-Jue": false, "16:00-Jue": true,
+      "14:00-Vie": true, "15:00-Vie": false, "16:00-Vie": false
+    };
+
+    function renderizarCalendario() {
+      const contenedor = document.getElementById('calendarGrid');
+      let html = `<div class="celda-encabezado-calendario calendar-header-cell">Hora</div>`;
+
+      DIAS.forEach(d => {
+        html += `<div class="celda-encabezado-calendario calendar-header-cell">${d}</div>`;
+      });
+
+      HORAS.forEach(h => {
+        html += `<div class="celda-hora-calendario calendar-time-cell">${h}</div>`;
+        DIAS.forEach(d => {
+          const clave = `${h}-${d}`;
+          const estado = estadoCalendario[clave];
+          let claseCss = 'bloque-calendario calendar-slot';
+          let texto = '';
+
+          if (estado === 'booked') {
+            claseCss += ' ocupado booked';
+            texto = 'Ocupada';
+          } else if (estado === true) {
+            claseCss += ' activo active';
+            texto = '✓ Libre';
+          }
+
+          html += `
+            <div class="${claseCss}" onclick="alternarBloqueCalendario('${clave}')">
+              ${texto}
+            </div>
+          `;
+        });
+      });
+
+      contenedor.innerHTML = html;
+      calcularFranjasActivas();
+    }
+
+    function alternarBloqueCalendario(clave) {
+      if (estadoCalendario[clave] === 'booked') {
+        alert("Esta franja ya está reservada por un estudiante para una tutoría confirmada.");
+        return;
+      }
+      estadoCalendario[clave] = !estadoCalendario[clave];
+      renderizarCalendario();
+    }
+
+    function calcularFranjasActivas() {
+      const activas = Object.values(estadoCalendario).filter(v => v === true).length;
+      document.getElementById('metricTotalHoras').textContent = activas;
+    }
+
+    function guardarDisponibilidad() {
+      mostrarMensajeToast("¡Disponibilidad actualizada y publicada en el catálogo!");
+    }
+
+    function renderizarSolicitudes() {
+      const lista = BaseDatosTutor.obtenerSolicitudesTutor().filter(s => s.estado === 'pendiente');
+      const contenedor = document.getElementById('solicitudesList');
+      
+      document.getElementById('metricPendientes').textContent = lista.length;
+      document.getElementById('badgeTotalPendientes').textContent = `${lista.length} nuevas`;
+
+      if (lista.length === 0) {
+        contenedor.innerHTML = `
+          <div style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">
+            No tienes solicitudes pendientes por responder.
+          </div>
+        `;
+        return;
+      }
+
+      contenedor.innerHTML = lista.map(s => `
+        <div class="request-card">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <img src="${s.foto}" alt="${s.estudianteNombre}" class="request-avatar">
+            <div>
+              <div style="font-weight: 700; font-size: 0.95rem;">${s.estudianteNombre}</div>
+              <div style="font-size: 0.82rem; color: var(--text-muted);">${s.materia} &bull; ${s.modalidad}</div>
+              <div style="font-size: 0.78rem; color: var(--primary); font-weight: 600;">📅 ${s.fecha} | ⏰ ${s.hora}</div>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+            <button class="boton boton-primario boton-sm btn btn-primary btn-sm" onclick="responderSolicitud(${s.id}, 'aceptar', '${s.estudianteNombre}')">
+              Aceptar
+            </button>
+            <button class="boton boton-borde boton-sm btn btn-outline btn-sm" onclick="responderSolicitud(${s.id}, 'rechazar', '${s.estudianteNombre}')">
+              Rechazar
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function responderSolicitud(id, accion, estudiante) {
+      if (accion === 'aceptar') {
+        BaseDatosTutor.actualizarEstadoSolicitud(id, 'aceptada');
+        mostrarMensajeToast(`Sesión con ${estudiante} confirmada. Se notificó al estudiante por correo y WhatsApp.`);
+      } else {
+        BaseDatosTutor.actualizarEstadoSolicitud(id, 'rechazada');
+        mostrarMensajeToast(`Solicitud rechazada.`);
+      }
+      renderizarSolicitudes();
+    }
+
+    // Aliases para compatibilidad
+    function renderCalendar() { renderizarCalendario(); }
+    function renderSolicitudes() { renderizarSolicitudes(); }
+    function toggleCalendarSlot(k) { alternarBloqueCalendario(k); }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderizarCalendario();
+      renderizarSolicitudes();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TutorConnect - Mi Perfil</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .profile-tabs-sidebar {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .profile-tab-item {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: var(--transition);
+    }
+
+    .profile-tab-item:hover, .profile-tab-item.active {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbar-container"></div>
+
+  <main class="main-container" style="max-width: 900px;">
+    
+    <div style="margin-bottom: 1.5rem;">
+      <h1 style="font-size: 1.6rem; font-weight: 800;">Mi perfil</h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Gestiona tu información personal, preferencias de contacto y seguridad</p>
+    </div>
+
+    <!-- Layout Perfil (Páginas 7 y 8 del prototipo) -->
+    <div style="display: grid; grid-template-columns: 240px 1fr; gap: 1.5rem; align-items: start;">
+      
+      <!-- Menú Lateral de Perfil -->
+      <aside class="profile-tabs-sidebar">
+        <div class="profile-tab-item active">
+          <span>👤</span> Datos personales
+        </div>
+        <div class="profile-tab-item" onclick="alert('Notificaciones configuradas por correo y WhatsApp.')">
+          <span>🔔</span> Notificaciones
+        </div>
+        <div class="profile-tab-item" onclick="alert('Módulo de seguridad: Contraseña cifrada en base de datos.')">
+          <span>🔒</span> Seguridad
+        </div>
+      </aside>
+
+      <!-- Formulario de Edición (Página 8 del prototipo) -->
+      <div class="card">
+        <form onsubmit="guardarPerfil(event)">
+          
+          <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+            <img id="perfilFotoPreview" src="" alt="Avatar" class="user-avatar" style="width: 72px; height: 72px;">
+            <div>
+              <div style="font-weight: 700; font-size: 1.15rem;" id="perfilNombreHeader">Elena Martínez</div>
+              <div style="font-size: 0.85rem; color: var(--text-muted); text-transform: capitalize;" id="perfilRolHeader">Estudiante</div>
+              <button type="button" class="btn btn-outline btn-sm" style="margin-top: 0.5rem;" onclick="cambiarFotoRandom()">
+                Cambiar foto
+              </button>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Nombre completo</label>
+              <input type="text" id="perfilNombre" required>
+            </div>
+            <div>
+              <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Correo electrónico</label>
+              <input type="email" id="perfilEmail" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <div>
+              <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Teléfono (WhatsApp)</label>
+              <input type="text" id="perfilTelefono" placeholder="+57 300 123 4567">
+            </div>
+            <div>
+              <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.35rem;">Ciudad / Ubicación</label>
+              <input type="text" id="perfilCiudad" placeholder="Bogotá, Colombia">
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+            <button type="button" class="btn btn-outline" onclick="TutorDB.resetDemoData(); location.reload();">
+              Restablecer datos demo
+            </button>
+            <button type="submit" class="btn btn-primary">
+              Guardar cambios
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+  </main>
+
+  <div id="mobile-bottom-nav"></div>
+  <div id="app-footer"></div>
+
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const usuario = BaseDatosTutor.obtenerUsuarioActual();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById('perfilFotoPreview').src = usuario.foto;
+      document.getElementById('perfilNombreHeader').textContent = usuario.nombre;
+      document.getElementById('perfilRolHeader').textContent = usuario.rol;
+      document.getElementById('perfilNombre').value = usuario.nombre;
+      document.getElementById('perfilEmail').value = usuario.email;
+      document.getElementById('perfilTelefono').value = usuario.telefono || "+57 300 123 4567";
+      document.getElementById('perfilCiudad').value = usuario.ciudad || "Bogotá, Colombia";
+    });
+
+    function cambiarFotoAleatoria() {
+      const coleccionFotos = [
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150",
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
+        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150"
+      ];
+      const fotoSeleccionada = coleccionFotos[Math.floor(Math.random() * coleccionFotos.length)];
+      usuario.foto = fotoSeleccionada;
+      document.getElementById('perfilFotoPreview').src = fotoSeleccionada;
+      mostrarMensajeToast("Foto de perfil actualizada.");
+    }
+
+    function guardarPerfil(evento) {
+      evento.preventDefault();
+      usuario.nombre = document.getElementById('perfilNombre').value.trim();
+      usuario.email = document.getElementById('perfilEmail').value.trim();
+      usuario.telefono = document.getElementById('perfilTelefono').value.trim();
+      usuario.ciudad = document.getElementById('perfilCiudad').value.trim();
+
+      BaseDatosTutor.guardarUsuarioActual(usuario);
+      renderizarBarraNavegacion();
+      mostrarMensajeToast("¡Perfil guardado exitosamente!");
+    }
+
+    // Aliases para compatibilidad con eventos inline
+    function cambiarFotoRandom() { cambiarFotoAleatoria(); }
+  </script>
+</body>
+</html>

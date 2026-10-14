@@ -1,0 +1,295 @@
+/* ==========================================================================
+   TutorConnect - Estilos Globales y Variables de Diseño
+   Integrantes: Daniel Barrios, Eduardo Escudero
+   ========================================================================== */
+
+:root {
+  /* Paleta Corporativa */
+  --color-primario: #2563eb;
+  --color-primario-oscuro: #1d4ed8;
+  --color-primario-claro: #eff6ff;
+  --color-primario-borde: #bfdbfe;
+  
+  --color-secundario: #f97316;
+  --color-secundario-oscuro: #ea580c;
+  --color-secundario-claro: #fff7ed;
+
+  /* Aliases de compatibilidad */
+  --primary: var(--color-primario);
+  --primary-hover: var(--color-primario-oscuro);
+  --primary-light: var(--color-primario-claro);
+  --primary-border: var(--color-primario-borde);
+  --secondary: var(--color-secundario);
+  --secondary-hover: var(--color-secundario-oscuro);
+  --secondary-light: var(--color-secundario-claro);
+
+  /* Colores de Estado */
+  --exito: #10b981;
+  --exito-fondo: #ecfdf5;
+  --alerta: #f59e0b;
+  --alerta-fondo: #fffbeb;
+  --peligro: #ef4444;
+  --peligro-fondo: #fef2f2;
+  
+  --success: var(--exito);
+  --success-bg: var(--exito-fondo);
+  --warning: var(--alerta);
+  --warning-bg: var(--alerta-fondo);
+  --danger: var(--peligro);
+  --danger-bg: var(--peligro-fondo);
+
+  /* Escala de Grises y Fondos */
+  --fondo-pagina: #f8fafc;
+  --fondo-tarjeta: #ffffff;
+  --texto-principal: #0f172a;
+  --texto-secundario: #64748b;
+  --color-borde: #e2e8f0;
+  --borde-enfoque: #3b82f6;
+
+  --bg-page: var(--fondo-pagina);
+  --bg-card: var(--fondo-tarjeta);
+  --text-main: var(--texto-principal);
+  --text-muted: var(--texto-secundario);
+  --border-color: var(--color-borde);
+  --border-focus: var(--borde-enfoque);
+
+  /* Sombras */
+  --sombra-chica: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --sombra-media: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --sombra-grande: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  --sombra-elevada: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+
+  --shadow-sm: var(--sombra-chica);
+  --shadow-md: var(--sombra-media);
+  --shadow-lg: var(--sombra-grande);
+  --shadow-xl: var(--sombra-elevada);
+
+  /* Bordes Redondeados */
+  --radio-sm: 6px;
+  --radio-md: 10px;
+  --radio-lg: 16px;
+  --radio-redondo: 9999px;
+
+  --radius-sm: var(--radio-sm);
+  --radius-md: var(--radio-md);
+  --radius-lg: var(--radio-lg);
+  --radius-full: var(--radio-redondo);
+
+  /* Transiciones */
+  --transicion-suave: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: var(--transicion-suave);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-color: var(--fondo-pagina);
+  color: var(--texto-principal);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Enlaces y botones base */
+a {
+  color: var(--color-primario);
+  text-decoration: none;
+  transition: var(--transicion-suave);
+}
+
+a:hover {
+  color: var(--color-primario-oscuro);
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  outline: none;
+  transition: var(--transicion-suave);
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 0.95rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  padding: 0.65rem 0.9rem;
+  background-color: #fff;
+  color: var(--texto-principal);
+  transition: var(--transicion-suave);
+  width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Barra Superior de Navegación */
+.barra-navegacion, .navbar {
+  background-color: var(--fondo-tarjeta);
+  border-bottom: 1px solid var(--color-borde);
+  padding: 0.75rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--sombra-chica);
+}
+
+.marca-logo, .nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--color-primario);
+}
+
+.marca-logo svg, .nav-brand svg {
+  width: 28px;
+  height: 28px;
+}
+
+.buscador-navegacion, .nav-search {
+  flex: 1;
+  max-width: 450px;
+  margin: 0 1.5rem;
+  position: relative;
+}
+
+.buscador-navegacion input, .nav-search input {
+  padding-left: 2.4rem;
+  border-radius: var(--radio-redondo);
+  background-color: #f1f5f9;
+}
+
+.icono-busqueda, .search-icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--texto-secundario);
+}
+
+.acciones-navegacion, .nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.enlace-nav, .nav-link {
+  font-size: 0.95rem;
+  color: var(--texto-secundario);
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radio-sm);
+}
+
+.enlace-nav:hover, .enlace-nav.activo,
+.nav-link:hover, .nav-link.active {
+  color: var(--color-primario);
+  background-color: var(--color-primario-claro);
+}
+
+.boton-icono-nav, .nav-icon-btn {
+  background: transparent;
+  position: relative;
+  padding: 0.5rem;
+  border-radius: var(--radio-redondo);
+  color: var(--texto-secundario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boton-icono-nav:hover, .nav-icon-btn:hover {
+  background-color: #f1f5f9;
+  color: var(--texto-principal);
+}
+
+.punto-alerta, .badge-dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-secundario);
+  border-radius: var(--radio-redondo);
+  border: 2px solid white;
+}
+
+.usuario-nav, .nav-user {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radio-redondo);
+  transition: var(--transicion-suave);
+}
+
+.usuario-nav:hover, .nav-user:hover {
+  background-color: #f1f5f9;
+}
+
+.avatar-usuario, .user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radio-redondo);
+  object-fit: cover;
+  border: 2px solid var(--color-primario-borde);
+}
+
+.texto-usuario, .user-info-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.nombre-usuario, .user-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--texto-principal);
+  line-height: 1.2;
+}
+
+.etiqueta-rol, .user-role-badge {
+  font-size: 0.72rem;
+  color: var(--texto-secundario);
+  text-transform: capitalize;
+}
+
+/* Layout Principal */
+.contenedor-principal, .main-container {
+  flex: 1;
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+/* Pie de página con créditos requeridos */
+.pie-pagina-principal, .app-footer {
+  background-color: #ffffff;
+  border-top: 1px solid var(--color-borde);
+  padding: 1.25rem 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+  margin-top: auto;
+}
+
+.pie-pagina-principal strong, .app-footer strong {
+  color: var(--texto-principal);
+}

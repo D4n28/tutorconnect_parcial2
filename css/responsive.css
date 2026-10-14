@@ -1,0 +1,221 @@
+/* ==========================================================================
+   TutorConnect - Estilos Adaptativos Móvil (Responsive & Mobile-First)
+   Integrantes: Daniel Barrios, Eduardo Escudero
+   ========================================================================== */
+
+/* Barra de Navegación Inferior Móvil (Tab Bar) */
+.navegacion-inferior-movil, .mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background-color: #ffffff;
+  border-top: 1px solid var(--color-borde);
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+  z-index: 999;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+
+.item-nav-movil, .mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--texto-secundario);
+  text-decoration: none;
+  font-size: 0.72rem;
+  font-weight: 500;
+  gap: 0.25rem;
+  flex: 1;
+  height: 100%;
+  position: relative;
+}
+
+.item-nav-movil svg, .mobile-nav-item svg {
+  width: 22px;
+  height: 22px;
+}
+
+.item-nav-movil.activo, .mobile-nav-item.active {
+  color: var(--color-primario);
+  font-weight: 700;
+}
+
+.item-nav-movil.activo svg, .mobile-nav-item.active svg {
+  stroke-width: 2.5;
+}
+
+/* Grilla del Dashboard de Estudiante */
+.layout-dashboard-estudiante, .student-dashboard-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.barra-filtros, .filter-sidebar {
+  background-color: var(--fondo-tarjeta);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+  padding: 1.25rem;
+  position: sticky;
+  top: 80px;
+}
+
+.grilla-tutores, .tutors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+
+/* Grilla del Dashboard del Tutor */
+.grilla-metricas-tutor, .tutor-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tarjeta-metrica, .metric-card {
+  background: white;
+  padding: 1.25rem;
+  border-radius: var(--radio-lg);
+  border: 1px solid var(--color-borde);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.caja-icono-metrica, .metric-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radio-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primario-claro);
+  color: var(--color-primario);
+}
+
+.numero-metrica, .metric-number {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--texto-principal);
+}
+
+.etiqueta-metrica, .metric-label {
+  font-size: 0.8rem;
+  color: var(--texto-secundario);
+}
+
+.layout-dividido-tutor, .tutor-split-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Calendario de Disponibilidad */
+.grilla-calendario-horarios, .schedule-calendar-grid {
+  display: grid;
+  grid-template-columns: 70px repeat(5, 1fr);
+  gap: 4px;
+  background: #f1f5f9;
+  padding: 8px;
+  border-radius: var(--radio-md);
+  margin-top: 1rem;
+  font-size: 0.8rem;
+}
+
+.celda-encabezado-calendario, .calendar-header-cell {
+  background: #e2e8f0;
+  padding: 0.5rem 0.2rem;
+  text-align: center;
+  font-weight: 700;
+  border-radius: var(--radio-sm);
+}
+
+.celda-hora-calendario, .calendar-time-cell {
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--texto-secundario);
+  font-weight: 600;
+}
+
+.bloque-calendario, .calendar-slot {
+  background: #ffffff;
+  min-height: 40px;
+  border-radius: var(--radio-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px dashed #cbd5e1;
+  transition: var(--transicion-suave);
+}
+
+.bloque-calendario.activo, .calendar-slot.active {
+  background-color: var(--color-primario);
+  color: #ffffff;
+  border: 1px solid var(--color-primario-oscuro);
+  font-weight: 600;
+}
+
+.bloque-calendario.ocupado, .calendar-slot.booked {
+  background-color: #fee2e2;
+  color: var(--peligro);
+  border: 1px solid #fca5a5;
+  cursor: not-allowed;
+}
+
+/* Adaptación para pantallas medianas y móviles */
+@media (max-width: 992px) {
+  .layout-dashboard-estudiante, .student-dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .layout-dividido-tutor, .tutor-split-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .barra-filtros, .filter-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 74px; /* Espacio para barra de navegación inferior móvil */
+  }
+
+  .barra-navegacion .enlaces-escritorio,
+  .navbar .nav-links-desktop,
+  .barra-navegacion .buscador-navegacion,
+  .navbar .nav-search,
+  .barra-navegacion .texto-usuario,
+  .navbar .user-info-text {
+    display: none;
+  }
+
+  .navegacion-inferior-movil, .mobile-bottom-nav {
+    display: flex;
+  }
+
+  .contenedor-principal, .main-container {
+    padding: 1rem 0.75rem;
+  }
+
+  .grilla-tutores, .tutors-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grilla-calendario-horarios, .schedule-calendar-grid {
+    overflow-x: auto;
+    font-size: 0.75rem;
+  }
+}

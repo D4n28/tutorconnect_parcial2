@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TutorConnect - Sesión de Videoconferencia</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .videocall-container {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 1rem;
+      height: calc(100vh - 140px);
+      min-height: 520px;
+    }
+
+    .video-stage {
+      background: #0f172a;
+      border-radius: var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .video-main-feed {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .video-stream-box {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.95;
+    }
+
+    .participant-badge {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      background: rgba(15, 23, 42, 0.75);
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .pip-self-video {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 160px;
+      height: 100px;
+      border-radius: var(--radius-md);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+      background: #1e293b;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .call-controls-bar {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .ctrl-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      background: #334155;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .ctrl-btn:hover {
+      background: #475569;
+    }
+
+    .ctrl-btn.btn-hangup {
+      background: #ef4444;
+    }
+
+    .ctrl-btn.btn-hangup:hover {
+      background: #dc2626;
+    }
+
+    .ctrl-btn.muted {
+      background: #ef4444;
+    }
+
+    .videocall-chat {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-messages-scroll {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .chat-bubble {
+      max-width: 85%;
+      padding: 0.6rem 0.85rem;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+    }
+
+    .chat-bubble.incoming {
+      background: #f1f5f9;
+      align-self: flex-start;
+    }
+
+    .chat-bubble.outgoing {
+      background: var(--primary);
+      color: white;
+      align-self: flex-end;
+    }
+
+    @media (max-width: 900px) {
+      .videocall-container {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .video-stage {
+        height: 380px;
+      }
+      .videocall-chat {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbar-container"></div>
+
+  <main class="main-container">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <div>
+        <h1 style="font-size: 1.3rem; font-weight: 700;">Sesión Virtual en Vivo: <span id="sessionTopic">Cálculo Diferencial</span></h1>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Integración simulada con Google Meet / Microsoft Teams API</span>
+      </div>
+      <div>
+        <span class="badge badge-online">
+          <span class="badge-dot-indicator"></span> Conexión Segura HD (30 FPS)
+        </span>
+      </div>
+    </div>
+
+    <!-- Escenario de la Videollamada (Páginas 6 y 11 del prototipo) -->
+    <div class="videocall-container">
+      
+      <div class="video-stage">
+        <div class="video-main-feed">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800" alt="Tutor Cámara" class="video-stream-box" id="tutorCameraFeed">
+          
+          <div class="participant-badge">
+            <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%;"></span>
+            <span id="callTutorNombre">Ana García (Tutor)</span>
+          </div>
+
+          <!-- Tu propia cámara (PIP) -->
+          <div class="pip-self-video">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300" alt="Tu cámara" style="width: 100%; height: 100%; object-fit: cover;" id="selfCameraFeed">
+          </div>
+        </div>
+
+        <!-- Barra de Controles Inferiores -->
+        <div class="call-controls-bar">
+          <button class="ctrl-btn" id="btnMic" onclick="toggleMic()" title="Micrófono">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+          </button>
+          
+          <button class="ctrl-btn" id="btnCam" onclick="toggleCam()" title="Cámara">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+          </button>
+
+          <button class="ctrl-btn" onclick="compartirPantalla()" title="Compartir pantalla">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          </button>
+
+          <button class="ctrl-btn btn-hangup" onclick="finalizarLlamada()" title="Colgar y salir">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.42 19.42 0 0 1-3.33-2.67m-2.67-3.34a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91"></path><line x1="23" y1="1" x2="1" y2="23"></line></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Chat Integrado durante la Videollamada -->
+      <aside class="videocall-chat">
+        <div style="padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 700; font-size: 0.95rem;">
+          Chat de la reunión
+        </div>
+
+        <div class="chat-messages-scroll" id="chatContainer">
+          <div class="chat-bubble incoming">
+            <strong>Ana García</strong>
+            <div>¡Hola Elena! Bienvenida a la clase. ¿Me escuchas y ves la pantalla bien?</div>
+          </div>
+          <div class="chat-bubble outgoing">
+            <div>¡Hola profe! Sí, te escucho fuerte y claro. Lista para resolver las derivadas.</div>
+          </div>
+        </div>
+
+        <form onsubmit="enviarMensajeChat(event)" style="padding: 0.75rem; border-top: 1px solid var(--border-color); display: flex; gap: 0.5rem;">
+          <input type="text" id="chatInput" placeholder="Escribe al tutor..." style="padding: 0.5rem 0.75rem;">
+          <button type="submit" class="btn btn-primary btn-sm">Enviar</button>
+        </form>
+      </aside>
+
+    </div>
+  </main>
+
+  <div id="mobile-bottom-nav"></div>
+  <div id="app-footer"></div>
+
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const parametrosUrl = new URLSearchParams(window.location.search);
+    const tutorNombre = parametrosUrl.get('tutor') || 'Ana García';
+    const materia = parametrosUrl.get('materia') || 'Cálculo Diferencial';
+
+    let microfonoActivo = true;
+    let camaraActiva = true;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById('callTutorNombre').textContent = `${tutorNombre} (Tutor)`;
+      document.getElementById('sessionTopic').textContent = materia;
+    });
+
+    function alternarMicrofono() {
+      microfonoActivo = !microfonoActivo;
+      const boton = document.getElementById('btnMic');
+      boton.classList.toggle('muted', !microfonoActivo);
+      mostrarMensajeToast(microfonoActivo ? "Micrófono activado" : "Micrófono silenciado");
+    }
+
+    function alternarCamara() {
+      camaraActiva = !camaraActiva;
+      const boton = document.getElementById('btnCam');
+      const feed = document.getElementById('selfCameraFeed');
+      boton.classList.toggle('muted', !camaraActiva);
+      feed.style.opacity = camaraActiva ? "1" : "0.1";
+      mostrarMensajeToast(camaraActiva ? "Cámara encendida" : "Cámara apagada");
+    }
+
+    function compartirPantalla() {
+      mostrarMensajeToast("Compartiendo pantalla completa con el tutor...");
+    }
+
+    function finalizarLlamada() {
+      if (confirm("¿Deseas finalizar la llamada y volver al panel?")) {
+        window.location.href = "mis-reservas.html";
+      }
+    }
+
+    function enviarMensajeChat(evento) {
+      evento.preventDefault();
+      const entrada = document.getElementById('chatInput');
+      const texto = entrada.value.trim();
+      if (!texto) return;
+
+      const contenedor = document.getElementById('chatContainer');
+      const burbuja = document.createElement('div');
+      burbuja.className = "chat-bubble outgoing";
+      burbuja.innerHTML = `<div>${texto}</div>`;
+      contenedor.appendChild(burbuja);
+      entrada.value = "";
+      contenedor.scrollTop = contenedor.scrollHeight;
+
+      // Respuesta automática del tutor
+      setTimeout(() => {
+        const respuesta = document.createElement('div');
+        respuesta.className = "chat-bubble incoming";
+        respuesta.innerHTML = `<strong>${tutorNombre}</strong><div>Entendido, continuemos con el ejercicio.</div>`;
+        contenedor.appendChild(respuesta);
+        contenedor.scrollTop = contenedor.scrollHeight;
+      }, 1500);
+    }
+
+    // Aliases para compatibilidad con eventos inline
+    function toggleMic() { alternarMicrofono(); }
+    function toggleCam() { alternarCamara(); }
+  </script>
+</body>
+</html>

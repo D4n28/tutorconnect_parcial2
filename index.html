@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TutorConnect - Iniciar Sesión y Registro</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%);
+      padding: 1.5rem;
+    }
+
+    .auth-container {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-xl);
+      width: 100%;
+      max-width: 960px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .auth-banner {
+      background: linear-gradient(rgba(30, 58, 138, 0.85), rgba(37, 99, 235, 0.9)), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800') center/cover;
+      color: #ffffff;
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .auth-banner-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .auth-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      opacity: 0.9;
+    }
+
+    .auth-form-side {
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: #f1f5f9;
+      padding: 0.35rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-tab-btn {
+      flex: 1;
+      padding: 0.6rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      text-align: center;
+    }
+
+    .auth-tab-btn.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .role-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .role-option {
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .role-option.selected {
+      border-color: var(--primary);
+      background-color: var(--primary-light);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: var(--text-main);
+    }
+
+    .demo-accounts {
+      margin-top: 1.5rem;
+      padding: 0.85rem;
+      background: #f8fafc;
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 0.8rem;
+    }
+
+    .demo-accounts-btns {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .auth-container {
+        grid-template-columns: 1fr;
+      }
+      .auth-banner {
+        display: none;
+      }
+      .auth-form-side {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="auth-page">
+
+  <div class="auth-container">
+    <!-- Lado Izquierdo: Banner (Página 2 del Prototipo Figma) -->
+    <div class="auth-banner">
+      <div>
+        <div class="auth-banner-header">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+          <span>TutorConnect</span>
+        </div>
+        <p style="margin-top: 1.5rem; font-size: 1.5rem; font-weight: 700; line-height: 1.3;">
+          Aprende con los mejores tutores
+        </p>
+        <p style="margin-top: 0.75rem; font-size: 0.95rem; opacity: 0.9;">
+          Conectamos estudiantes con tutores certificados para sesiones personalizadas, virtuales o presenciales.
+        </p>
+      </div>
+
+      <div class="auth-stats">
+        <div>
+          <div class="stat-number">2,400+</div>
+          <div class="stat-label">Tutores Activos</div>
+        </div>
+        <div>
+          <div class="stat-number">98%</div>
+          <div class="stat-label">Satisfacción</div>
+        </div>
+        <div>
+          <div class="stat-number">45+</div>
+          <div class="stat-label">Materias</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lado Derecho: Formularios de Login / Registro -->
+    <div class="auth-form-side">
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab-btn active" id="tabLoginBtn" onclick="switchTab('login')">Iniciar sesión</button>
+        <button type="button" class="auth-tab-btn" id="tabRegisterBtn" onclick="switchTab('register')">Registrarse</button>
+      </div>
+
+      <!-- Formulario de Login -->
+      <form id="formLogin" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="loginEmail">Correo electrónico</label>
+          <input type="email" id="loginEmail" required placeholder="tu@correo.com" value="elena@email.com">
+        </div>
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between;">
+            <label for="loginPass">Contraseña</label>
+            <a href="#" style="font-size: 0.8rem;" onclick="alert('Funcionalidad de recuperación: Se enviaría un correo con el token de restablecimiento.')">¿Olvidaste tu contraseña?</a>
+          </div>
+          <input type="password" id="loginPass" required placeholder="••••••••" value="123456">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1rem; padding: 0.75rem;">
+          Iniciar sesión
+        </button>
+      </form>
+
+      <!-- Formulario de Registro (Páginas 2 y 3 del prototipo) -->
+      <form id="formRegister" style="display: none;" onsubmit="handleRegister(event)">
+        <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.35rem;">Selecciona tu rol:</label>
+        <div class="role-selector">
+          <div class="role-option selected" id="roleEstudiante" onclick="selectRole('estudiante')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 0.25rem; display: block;">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            <span>Estudiante</span>
+          </div>
+          <div class="role-option" id="roleTutor" onclick="selectRole('tutor')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 0.25rem; display: block;">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Tutor</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regNombre">Nombre completo</label>
+          <input type="text" id="regNombre" required placeholder="Ej. Ana Morales">
+        </div>
+        <div class="form-group">
+          <label for="regEmail">Correo electrónico</label>
+          <input type="email" id="regEmail" required placeholder="ana@ejemplo.com">
+        </div>
+        <div class="form-group">
+          <label for="regPass">Contraseña</label>
+          <input type="password" id="regPass" required placeholder="Mínimo 6 caracteres">
+        </div>
+
+        <!-- Campos adicionales si es Tutor -->
+        <div id="tutorExtraFields" style="display: none;">
+          <div class="form-group">
+            <label for="regEspecialidad">Especialidad / Materia principal</label>
+            <input type="text" id="regEspecialidad" placeholder="Ej. Matemáticas, Física, Programación">
+          </div>
+          <div class="form-group">
+            <label for="regNivel">Nivel educativo que imparte</label>
+            <select id="regNivel">
+              <option value="Secundaria">Secundaria</option>
+              <option value="Universidad" selected>Universidad</option>
+              <option value="Todos">Todos los niveles</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="regPrecio">Precio por hora (USD / EUR)</label>
+            <input type="number" id="regPrecio" placeholder="25" min="5" value="25">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-secondary btn-block" style="margin-top: 1rem; padding: 0.75rem;">
+          Crear cuenta
+        </button>
+      </form>
+
+      <!-- Accesos rápidos Demo (Página 8 del PDF) -->
+      <div class="demo-accounts">
+        <span style="font-weight: 600; color: var(--text-main);">Accesos rápidos de prueba (Demostración):</span>
+        <div class="demo-accounts-btns">
+          <button type="button" class="btn btn-outline btn-sm" style="flex: 1;" onclick="loginAsDemo('estudiante')">
+            Demo Estudiante
+          </button>
+          <button type="button" class="btn btn-outline btn-sm" style="flex: 1;" onclick="loginAsDemo('tutor')">
+            Demo Tutor (Ana)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/db.js"></script>
+  <script>
+    let rolSeleccionadoActual = 'estudiante';
+
+    function cambiarPestana(pestana) {
+      const botonLogin = document.getElementById('tabLoginBtn');
+      const botonRegistro = document.getElementById('tabRegisterBtn');
+      const formularioLogin = document.getElementById('formLogin');
+      const formularioRegistro = document.getElementById('formRegister');
+
+      if (pestana === 'login') {
+        botonLogin.classList.add('active');
+        botonRegistro.classList.remove('active');
+        formularioLogin.style.display = 'block';
+        formularioRegistro.style.display = 'none';
+      } else {
+        botonRegistro.classList.add('active');
+        botonLogin.classList.remove('active');
+        formularioRegistro.style.display = 'block';
+        formularioLogin.style.display = 'none';
+      }
+    }
+
+    function seleccionarRol(rol) {
+      rolSeleccionadoActual = rol;
+      const opcionEstudiante = document.getElementById('roleEstudiante');
+      const opcionTutor = document.getElementById('roleTutor');
+      const camposExtrasTutor = document.getElementById('tutorExtraFields');
+
+      if (rol === 'estudiante') {
+        opcionEstudiante.classList.add('selected');
+        opcionTutor.classList.remove('selected');
+        camposExtrasTutor.style.display = 'none';
+      } else {
+        opcionTutor.classList.add('selected');
+        opcionEstudiante.classList.remove('selected');
+        camposExtrasTutor.style.display = 'block';
+      }
+    }
+
+    function procesarInicioSesion(evento) {
+      evento.preventDefault();
+      const correo = document.getElementById('loginEmail').value.trim();
+      
+      // Si el correo coincide con un tutor conocido o contiene 'tutor', entra como tutor
+      if (correo.includes('tutor') || correo === 'ana.garcia@tutorconnect.com') {
+        iniciarSesionComoDemostracion('tutor');
+      } else {
+        iniciarSesionComoDemostracion('estudiante');
+      }
+    }
+
+    function procesarRegistro(evento) {
+      evento.preventDefault();
+      const nombre = document.getElementById('regNombre').value.trim();
+      const correo = document.getElementById('regEmail').value.trim();
+      
+      const nuevoUsuario = {
+        id: Date.now(),
+        nombre: nombre,
+        email: correo,
+        rol: rolSeleccionadoActual,
+        telefono: "+57 300 000 0000",
+        ciudad: "Bogotá, Colombia",
+        foto: rolSeleccionadoActual === 'tutor' 
+          ? "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150"
+          : "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
+      };
+
+      BaseDatosTutor.guardarUsuarioActual(nuevoUsuario);
+
+      if (rolSeleccionadoActual === 'tutor') {
+        window.location.href = 'dashboard-tutor.html';
+      } else {
+        window.location.href = 'dashboard-estudiante.html';
+      }
+    }
+
+    function iniciarSesionComoDemostracion(rol) {
+      if (rol === 'tutor') {
+        BaseDatosTutor.guardarUsuarioActual({
+          id: 2,
+          nombre: "Ana García",
+          email: "ana.garcia@tutorconnect.com",
+          rol: "tutor",
+          telefono: "+57 310 987 6543",
+          ciudad: "Madrid, España",
+          foto: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150"
+        });
+        window.location.href = "dashboard-tutor.html";
+      } else {
+        BaseDatosTutor.guardarUsuarioActual({
+          id: 1,
+          nombre: "Elena Martínez",
+          email: "elena@email.com",
+          rol: "estudiante",
+          telefono: "+57 300 123 4567",
+          ciudad: "Bogotá, Colombia",
+          foto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
+        });
+        window.location.href = "dashboard-estudiante.html";
+      }
+    }
+
+    // Aliases para compatibilidad con eventos inline
+    function switchTab(t) { cambiarPestana(t); }
+    function selectRole(r) { seleccionarRol(r); }
+    function handleLogin(e) { procesarInicioSesion(e); }
+    function handleRegister(e) { procesarRegistro(e); }
+    function loginAsDemo(r) { iniciarSesionComoDemostracion(r); }
+  </script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+/* ==========================================================================
+   TutorConnect - Componentes de UI Reutilizables
+   Integrantes: Daniel Barrios, Eduardo Escudero
+   ========================================================================== */
+
+/* Botones */
+.boton, .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 0.92rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radio-md);
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transicion-suave);
+}
+
+.boton-primario, .btn-primary {
+  background-color: var(--color-primario);
+  color: #ffffff;
+}
+
+.boton-primario:hover, .btn-primary:hover {
+  background-color: var(--color-primario-oscuro);
+  color: #ffffff;
+}
+
+.boton-secundario, .btn-secondary {
+  background-color: var(--color-secundario);
+  color: #ffffff;
+}
+
+.boton-secundario:hover, .btn-secondary:hover {
+  background-color: var(--color-secundario-oscuro);
+  color: #ffffff;
+}
+
+.boton-borde, .btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--color-borde);
+  color: var(--texto-principal);
+}
+
+.boton-borde:hover, .btn-outline:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.boton-peligro, .btn-danger {
+  background-color: var(--peligro-fondo);
+  color: var(--peligro);
+  border: 1px solid #fecaca;
+}
+
+.boton-peligro:hover, .btn-danger:hover {
+  background-color: #fee2e2;
+}
+
+.boton-sm, .btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.82rem;
+  border-radius: var(--radio-sm);
+}
+
+.boton-bloque, .btn-block {
+  width: 100%;
+}
+
+/* Tarjetas */
+.tarjeta, .card {
+  background-color: var(--fondo-tarjeta);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+  padding: 1.25rem;
+  box-shadow: var(--sombra-chica);
+  transition: var(--transicion-suave);
+}
+
+.tarjeta:hover, .card:hover {
+  box-shadow: var(--sombra-media);
+}
+
+/* Placa / Badge de Estado */
+.placa-estado, .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radio-redondo);
+}
+
+.placa-disponible, .badge-online {
+  background-color: var(--exito-fondo);
+  color: var(--exito);
+  border: 1px solid #a7f3d0;
+}
+
+.placa-ocupado, .badge-busy {
+  background-color: var(--peligro-fondo);
+  color: var(--peligro);
+  border: 1px solid #fecaca;
+}
+
+.placa-pendiente, .badge-pending {
+  background-color: var(--alerta-fondo);
+  color: var(--alerta);
+  border: 1px solid #fde68a;
+}
+
+.indicador-punto, .badge-dot-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.placa-disponible .indicador-punto, .badge-online .badge-dot-indicator { background-color: var(--exito); }
+.placa-ocupado .indicador-punto, .badge-busy .badge-dot-indicator { background-color: var(--peligro); }
+.placa-pendiente .indicador-punto, .badge-pending .badge-dot-indicator { background-color: var(--alerta); }
+
+/* Calificación con estrellas */
+.estrellas-calificacion, .rating-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: #fbbf24;
+  font-size: 0.88rem;
+}
+
+.puntaje-calificacion, .rating-score {
+  font-weight: 700;
+  color: var(--texto-principal);
+  margin-left: 0.25rem;
+}
+
+.total-resenas-texto, .rating-count {
+  font-size: 0.8rem;
+  color: var(--texto-secundario);
+}
+
+/* Tarjeta de Tutor */
+.tarjeta-tutor, .tutor-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: var(--radio-lg);
+  overflow: hidden;
+  position: relative;
+}
+
+.encabezado-tarjeta-tutor, .tutor-card-header {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 0.85rem;
+}
+
+.avatar-tutor, .tutor-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radio-md);
+  object-fit: cover;
+}
+
+.info-tutor-encabezado, .tutor-header-info {
+  flex: 1;
+}
+
+.nombre-tutor, .tutor-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--texto-principal);
+}
+
+.especialidad-tutor, .tutor-specialty {
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+  margin-bottom: 0.35rem;
+}
+
+.metadatos-tutor, .tutor-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0.85rem 0;
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+}
+
+.item-metadato, .tutor-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.etiqueta-precio, .tutor-price-tag {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-primario);
+}
+
+.etiqueta-precio span, .tutor-price-tag span {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--texto-secundario);
+}
+
+.pie-tarjeta-tutor, .tutor-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--color-borde);
+  margin-top: auto;
+}
+
+/* Modales */
+.fondo-modal, .modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  padding: 1rem;
+}
+
+.fondo-modal.activo, .modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.contenido-modal, .modal-content {
+  background-color: #fff;
+  border-radius: var(--radio-lg);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--sombra-elevada);
+  transform: translateY(20px);
+  transition: transform 0.25s ease;
+}
+
+.fondo-modal.activo .contenido-modal,
+.modal-backdrop.active .modal-content {
+  transform: translateY(0);
+}
+
+.encabezado-modal, .modal-header {
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--color-borde);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.encabezado-modal h3, .modal-header h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.boton-cerrar-modal, .modal-close-btn {
+  background: none;
+  font-size: 1.5rem;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.cuerpo-modal, .modal-body {
+  padding: 1.5rem;
+}
+
+.pie-modal, .modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--color-borde);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* Toast de Notificaciones */
+.contenedor-toast, .toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.aviso-toast, .toast {
+  background-color: #1e293b;
+  color: #fff;
+  padding: 0.85rem 1.2rem;
+  border-radius: var(--radio-md);
+  box-shadow: var(--sombra-grande);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  animation: deslizarAviso 0.3s ease;
+}
+
+@keyframes deslizarAviso {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Pestañas (Tabs) */
+.cabecera-pestanas, .tabs-header {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--color-borde);
+  margin-bottom: 1.5rem;
+}
+
+.boton-pestana, .tab-btn {
+  padding: 0.75rem 1.25rem;
+  background: none;
+  font-weight: 600;
+  color: var(--texto-secundario);
+  position: relative;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+}
+
+.boton-pestana.activo, .tab-btn.active {
+  color: var(--color-primario);
+  border-bottom-color: var(--color-primario);
+}

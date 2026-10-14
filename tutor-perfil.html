@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TutorConnect - Perfil del Tutor</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .tutor-profile-header {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .profile-avatar-large {
+      width: 120px;
+      height: 120px;
+      border-radius: var(--radius-lg);
+      object-fit: cover;
+      border: 3px solid var(--primary-border);
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-price-card {
+      background: var(--primary-light);
+      border: 1px solid var(--primary-border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 2rem;
+      text-align: center;
+      min-width: 220px;
+    }
+
+    .time-slot-btn {
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: white;
+      font-weight: 500;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .time-slot-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .time-slot-btn.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .review-item {
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .review-item:last-child {
+      border-bottom: none;
+    }
+
+    @media (max-width: 768px) {
+      .tutor-profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.2rem;
+      }
+      .profile-price-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra Superior -->
+  <div id="navbar-container"></div>
+
+  <main class="main-container">
+    <a href="dashboard-estudiante.html" class="btn btn-outline btn-sm" style="margin-bottom: 1rem; display: inline-flex;">
+      &larr; Volver al catálogo de tutores
+    </a>
+
+    <!-- Header del Perfil (Páginas 4 y 9 del prototipo) -->
+    <div class="tutor-profile-header" id="profileHeader">
+      <!-- Inyectado por JS -->
+    </div>
+
+    <!-- Contenido en dos columnas: Información/Reseñas y Widget de Reserva -->
+    <div style="display: grid; grid-template-columns: 1.6fr 1fr; gap: 1.5rem; align-items: start;" id="profileBodyGrid">
+      
+      <!-- Columna Izquierda: Sobre mí, experiencia y Reseñas de Estudiantes -->
+      <div>
+        <div class="card" style="margin-bottom: 1.5rem;">
+          <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">Sobre mí</h2>
+          <p id="tutorBio" style="color: var(--text-main); line-height: 1.6; font-size: 0.95rem; margin-bottom: 1.25rem;"></p>
+          
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Especialidad y Materias</h3>
+          <div id="tutorTags" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem;"></div>
+
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">Ubicación y Cobertura</h3>
+          <p id="tutorUbicacion" style="color: var(--text-muted); font-size: 0.9rem;"></p>
+        </div>
+
+        <!-- Sección de Reseñas y Calificaciones (Páginas 4 y 12) -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h2 style="font-size: 1.25rem; font-weight: 700;">Reseñas de estudiantes</h2>
+            <div class="rating-stars" style="font-size: 1.1rem;">
+              <span>★</span>
+              <span class="rating-score" id="resenasScore">4.9</span>
+              <span class="rating-count" id="resenasTotal">(127)</span>
+            </div>
+          </div>
+
+          <div id="reviewsList">
+            <div class="review-item">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+                <strong>Carlos M.</strong>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Hace 3 días</span>
+              </div>
+              <div class="rating-stars" style="font-size: 0.8rem; margin-bottom: 0.4rem;">★★★★★</div>
+              <p style="font-size: 0.9rem; color: var(--text-muted);">Excelente profesora. Me ayudó a superar el examen de cálculo con una nota sobresaliente. Muy paciente y didáctica.</p>
+            </div>
+            <div class="review-item">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+                <strong>Laura K.</strong>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Hace 1 semana</span>
+              </div>
+              <div class="rating-stars" style="font-size: 0.8rem; margin-bottom: 0.4rem;">★★★★★</div>
+              <p style="font-size: 0.9rem; color: var(--text-muted);">Explica increíblemente bien. Totalmente recomendada para cualquier tema de álgebra y física.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Widget Interactivo de Reserva (Página 4) -->
+      <div class="card" style="position: sticky; top: 80px;">
+        <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">Reservar sesión</h2>
+
+        <div style="margin-bottom: 1.25rem;">
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">1. Modalidad</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;" id="modalidadContainer">
+            <button type="button" class="btn btn-outline btn-sm active" id="btnModVirtual" onclick="selectModalidad('Virtual')">
+              Virtual (Meet)
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" id="btnModPresencial" onclick="selectModalidad('Presencial')">
+              Presencial
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.25rem;">
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.4rem;">2. Selecciona un día disponible</label>
+          <select id="selectDiaReserva" onchange="actualizarHorasDisponibles()">
+            <option value="Lunes">Próximo Lunes</option>
+            <option value="Miércoles">Próximo Miércoles</option>
+            <option value="Viernes">Próximo Viernes</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">3. Franjas horarias libres</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;" id="franjasHorariasGrid">
+            <!-- Inyectado dinámicamente -->
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid var(--border-color); padding-top: 1rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 0.4rem;">
+            <span style="color: var(--text-muted);">Tarifa por hora:</span>
+            <strong id="summaryPrecioHora">$25</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 800; color: var(--primary);">
+            <span>Total a pagar:</span>
+            <span id="summaryTotal">$25</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-secondary btn-block" onclick="continuarReserva()">
+          Continuar con la reserva &rarr;
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="mobile-bottom-nav"></div>
+  <div id="app-footer"></div>
+
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const parametrosUrl = new URLSearchParams(window.location.search);
+    const idTutor = parametrosUrl.get('id') || 1;
+    const tutor = BaseDatosTutor.obtenerTutorPorId(idTutor) || BaseDatosTutor.obtenerTutores()[0];
+
+    let modalidadSeleccionada = "Virtual";
+    let horaSeleccionada = tutor.horarios[0];
+
+    function inicializarPerfil() {
+      // Header
+      document.getElementById('profileHeader').innerHTML = `
+        <img src="${tutor.foto}" alt="${tutor.nombre}" class="profile-avatar-large">
+        <div class="profile-info">
+          <div style="display: flex; gap: 0.6rem; align-items: center; margin-bottom: 0.35rem;">
+            <h1 style="font-size: 1.6rem; font-weight: 800;">${tutor.nombre}</h1>
+            <span class="badge ${tutor.disponible ? 'badge-online' : 'badge-busy'}">
+              <span class="badge-dot-indicator"></span>
+              ${tutor.disponible ? 'Disponible' : 'Ocupado'}
+            </span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 0.6rem;">${tutor.especialidad}</p>
+          <div class="rating-stars">
+            <span>★</span>
+            <span class="rating-score">${tutor.calificacion.toFixed(1)}</span>
+            <span class="rating-count">(${tutor.totalResenas} reseñas) &bull; ${tutor.experiencia}</span>
+          </div>
+        </div>
+        <div class="profile-price-card">
+          <div style="font-size: 0.85rem; color: var(--text-muted);">Precio por hora</div>
+          <div style="font-size: 2rem; font-weight: 800; color: var(--primary);">$${tutor.precio}</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">${tutor.modalidad}</div>
+        </div>
+      `;
+
+      // Bio & Tags
+      document.getElementById('tutorBio').textContent = tutor.sobreMi;
+      document.getElementById('tutorTags').innerHTML = tutor.materias.map(m => `
+        <span class="badge" style="background: #f1f5f9; color: var(--text-main);">${m}</span>
+      `).join('') + `<span class="badge" style="background: #f1f5f9; color: var(--text-main);">${tutor.nivel}</span>`;
+      
+      document.getElementById('tutorUbicacion').innerHTML = `
+        📍 <strong>${tutor.ciudad}</strong> &bull; Sesiones virtuales mediante enlace instantáneo de videoconferencia o presenciales concertadas.
+      `;
+
+      document.getElementById('resenasScore').textContent = tutor.calificacion.toFixed(1);
+      document.getElementById('resenasTotal').textContent = `(${tutor.totalResenas})`;
+
+      document.getElementById('summaryPrecioHora').textContent = `$${tutor.precio}`;
+      document.getElementById('summaryTotal').textContent = `$${tutor.precio}`;
+
+      actualizarHorasDisponibles();
+    }
+
+    function seleccionarModalidad(modalidad) {
+      modalidadSeleccionada = modalidad;
+      document.getElementById('btnModVirtual').classList.toggle('active', modalidad === 'Virtual');
+      document.getElementById('btnModPresencial').classList.toggle('active', modalidad === 'Presencial');
+      if (modalidad === 'Presencial') {
+        document.getElementById('btnModPresencial').style.background = "var(--primary-light)";
+        document.getElementById('btnModVirtual').style.background = "white";
+      } else {
+        document.getElementById('btnModVirtual').style.background = "var(--primary-light)";
+        document.getElementById('btnModPresencial').style.background = "white";
+      }
+    }
+
+    function actualizarHorasDisponibles() {
+      const grilla = document.getElementById('franjasHorariasGrid');
+      grilla.innerHTML = tutor.horarios.map((h) => `
+        <button type="button" class="time-slot-btn ${h === horaSeleccionada ? 'selected' : ''}" onclick="seleccionarHora('${h}')">
+          ${h}
+        </button>
+      `).join('');
+    }
+
+    function seleccionarHora(hora) {
+      horaSeleccionada = hora;
+      actualizarHorasDisponibles();
+    }
+
+    function continuarReserva() {
+      const dia = document.getElementById('selectDiaReserva').value;
+      const url = `reserva-confirmacion.html?tutorId=${tutor.id}&dia=${encodeURIComponent(dia)}&hora=${encodeURIComponent(horaSeleccionada)}&modalidad=${encodeURIComponent(modalidadSeleccionada)}`;
+      window.location.href = url;
+    }
+
+    // Aliases para eventos inline
+    function initProfile() { inicializarPerfil(); }
+    function selectModalidad(m) { seleccionarModalidad(m); }
+    function selectHora(h) { seleccionarHora(h); }
+
+    document.addEventListener("DOMContentLoaded", inicializarPerfil);
+  </script>
+</body>
+</html>

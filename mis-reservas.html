@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TutorConnect - Mis Reservas</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .booking-item-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .booking-tutor-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .booking-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+      .booking-item-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .booking-actions {
+        width: 100%;
+        justify-content: flex-end;
+        border-top: 1px solid var(--border-color);
+        padding-top: 0.75rem;
+        margin-top: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbar-container"></div>
+
+  <main class="main-container">
+    <div style="margin-bottom: 1.5rem;">
+      <h1 style="font-size: 1.6rem; font-weight: 800;">Mis reservas</h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">Gestiona tus sesiones programadas, conéctate a las videollamadas o califica a tus profesores.</p>
+    </div>
+
+    <!-- Pestañas Próximas / Pasadas (Página 5 y 11 del prototipo) -->
+    <div class="tabs-header">
+      <button type="button" class="tab-btn active" id="tabProximas" onclick="switchBookingTab('proximas')">
+        Próximas (<span id="countProximas">0</span>)
+      </button>
+      <button type="button" class="tab-btn" id="tabPasadas" onclick="switchBookingTab('pasadas')">
+        Historial / Pasadas (<span id="countPasadas">0</span>)
+      </button>
+    </div>
+
+    <!-- Contenedor de Listado de Reservas -->
+    <div id="reservasContainer">
+      <!-- Inyectado dinámicamente -->
+    </div>
+  </main>
+
+  <!-- Modal de Calificación con Estrellas (Páginas 5 y 12 del PDF) -->
+  <div class="modal-backdrop" id="modalCalificar">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Calificar al Tutor</h3>
+        <button class="modal-close-btn" onclick="cerrarModalCalificar()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1rem;" id="modalCalificarTexto">
+          ¿Cómo fue tu experiencia en la sesión de tutoría?
+        </p>
+
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <div style="font-size: 2.2rem; cursor: pointer; color: #cbd5e1; user-select: none;" id="starRatingSelector">
+            <span onclick="setStars(1)">★</span>
+            <span onclick="setStars(2)">★</span>
+            <span onclick="setStars(3)">★</span>
+            <span onclick="setStars(4)">★</span>
+            <span onclick="setStars(5)">★</span>
+          </div>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--primary);" id="starsFeedbackLabel">5 de 5 estrellas</span>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.35rem;">Comentario u opinión (opcional):</label>
+          <textarea id="comentarioResena" rows="3" placeholder="Escribe aquí tu opinión sobre la explicación, puntualidad y dominio del tema..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="cerrarModalCalificar()">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="guardarCalificacion()">Publicar reseña</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="mobile-bottom-nav"></div>
+  <div id="app-footer"></div>
+
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    let pestanaActiva = 'proximas';
+    let puntajeEstrellasActual = 5;
+    let idReservaSeleccionada = null;
+
+    function renderizarReservas() {
+      const reservas = BaseDatosTutor.obtenerReservas();
+      const proximas = reservas.filter(r => r.estado === 'confirmada' || r.estado === 'pendiente');
+      const pasadas = reservas.filter(r => r.estado === 'completada' || r.estado === 'cancelada');
+
+      document.getElementById('countProximas').textContent = proximas.length;
+      document.getElementById('countPasadas').textContent = pasadas.length;
+
+      const contenedor = document.getElementById('reservasContainer');
+      const lista = pestanaActiva === 'proximas' ? proximas : pasadas;
+
+      if (lista.length === 0) {
+        contenedor.innerHTML = `
+          <div style="text-align: center; padding: 3rem; background: white; border-radius: 12px; border: 1px dashed var(--border-color);">
+            <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1rem;">No tienes sesiones en esta categoría.</p>
+            <a href="dashboard-estudiante.html" class="boton boton-primario boton-sm btn btn-primary btn-sm">Buscar nuevos tutores</a>
+          </div>
+        `;
+        return;
+      }
+
+      contenedor.innerHTML = lista.map(r => {
+        let clasePlaca = 'placa-disponible badge-online';
+        let textoPlaca = 'Confirmada';
+
+        if (r.estado === 'pendiente') {
+          clasePlaca = 'placa-pendiente badge-pending';
+          textoPlaca = 'Pendiente de aceptación';
+        } else if (r.estado === 'cancelada') {
+          clasePlaca = 'placa-ocupado badge-busy';
+          textoPlaca = 'Cancelada';
+        } else if (r.estado === 'completada') {
+          clasePlaca = 'placa-disponible badge-online';
+          textoPlaca = 'Completada';
+        }
+
+        return `
+          <div class="booking-item-card">
+            <div class="booking-tutor-meta">
+              <div style="background: var(--primary-light); color: var(--primary); width: 48px; height: 48px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+                👨‍🏫
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem;">
+                  <h3 style="font-size: 1.1rem; font-weight: 700;">${r.tutorNombre}</h3>
+                  <span class="placa-estado ${clasePlaca} badge">${textoPlaca}</span>
+                </div>
+                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.35rem;">${r.materia} &bull; ${r.modalidad}</div>
+                <div style="display: flex; gap: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                  <span>📅 ${r.fecha}</span>
+                  <span>⏰ ${r.hora}</span>
+                  <strong>$${r.precio}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="booking-actions">
+              ${r.estado === 'confirmada' ? `
+                <a href="${r.meetUrl || 'videoconferencia.html'}" class="boton boton-primario boton-sm btn btn-primary btn-sm">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                  Unirse a clase
+                </a>
+                <button type="button" class="boton boton-peligro boton-sm btn btn-danger btn-sm" onclick="cancelarReserva(${r.id})">
+                  Cancelar
+                </button>
+              ` : ''}
+
+              ${r.estado === 'pendiente' ? `
+                <button type="button" class="boton boton-borde boton-sm btn btn-outline btn-sm" onclick="cancelarReserva(${r.id})">
+                  Cancelar solicitud
+                </button>
+              ` : ''}
+
+              ${r.estado === 'completada' ? `
+                ${!r.calificada ? `
+                  <button type="button" class="boton boton-secundario boton-sm btn btn-secondary btn-sm" onclick="abrirModalCalificar(${r.id}, '${r.tutorNombre}')">
+                    ⭐ Calificar tutor
+                  </button>
+                ` : `
+                  <span class="placa-estado badge" style="background: #f1f5f9; color: #16a34a; font-weight: 600;">
+                    ✓ Calificado (${r.calificacionEstrellas}★)
+                  </span>
+                `}
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function cambiarPestanaReservas(pestana) {
+      pestanaActiva = pestana;
+      document.getElementById('tabProximas').classList.toggle('active', pestana === 'proximas');
+      document.getElementById('tabPasadas').classList.toggle('active', pestana === 'pasadas');
+      renderizarReservas();
+    }
+
+    function cancelarReserva(id) {
+      if (confirm("¿Estás seguro de que deseas cancelar esta reserva de tutoría?")) {
+        BaseDatosTutor.actualizarEstadoReserva(id, 'cancelada');
+        mostrarMensajeToast("La reserva ha sido cancelada.");
+        renderizarReservas();
+      }
+    }
+
+    function abrirModalCalificar(id, tutorNombre) {
+      idReservaSeleccionada = id;
+      document.getElementById('modalCalificarTexto').textContent = `¿Cómo estuvo tu clase con ${tutorNombre}?`;
+      establecerEstrellas(5);
+      document.getElementById('comentarioResena').value = '';
+      document.getElementById('modalCalificar').classList.add('active');
+    }
+
+    function cerrarModalCalificar() {
+      document.getElementById('modalCalificar').classList.remove('active');
+    }
+
+    function establecerEstrellas(numeroEstrellas) {
+      puntajeEstrellasActual = numeroEstrellas;
+      const elementosEstrellas = document.getElementById('starRatingSelector').children;
+      for (let i = 0; i < 5; i++) {
+        elementosEstrellas[i].style.color = (i < numeroEstrellas) ? '#fbbf24' : '#cbd5e1';
+      }
+      document.getElementById('starsFeedbackLabel').textContent = `${numeroEstrellas} de 5 estrellas`;
+    }
+
+    function guardarCalificacion() {
+      const comentario = document.getElementById('comentarioResena').value.trim();
+      BaseDatosTutor.calificarReserva(idReservaSeleccionada, puntajeEstrellasActual, comentario);
+      cerrarModalCalificar();
+      mostrarMensajeToast("¡Muchas gracias! Tu reseña ha sido guardada.");
+      renderizarReservas();
+    }
+
+    // Aliases para compatibilidad
+    function switchBookingTab(p) { cambiarPestanaReservas(p); }
+    function renderReservas() { renderizarReservas(); }
+    function setStars(n) { establecerEstrellas(n); }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      establecerEstrellas(5);
+      renderizarReservas();
+    });
+  </script>
+</body>
+</html>
